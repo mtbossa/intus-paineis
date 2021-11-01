@@ -9,6 +9,18 @@ class Recurrence extends Model
 {
     use HasFactory;
 
+    protected $table = 'recurrences';
+
+    protected $primaryKey = 'id';
+
+    protected $fillable = [
+        'description', 
+        'isoweekday', 
+        'day', 
+        'month',
+        'year',        
+    ];
+
     public function posts()
     {
         return $this->hasMany(Post::class);
