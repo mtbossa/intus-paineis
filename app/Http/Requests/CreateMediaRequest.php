@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateDisplayRequest extends FormRequest
+class CreateMediaRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,15 +24,14 @@ class CreateDisplayRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'     => [
+            'name' => [
                 'required',
-                'max:50',
+                'max:50',                
             ],
-
-            'location' => [
+            'description' => [
                 'required',
-                'max:50',
-            ],
+                'max:100',
+            ],            
         ];
     }
 }

@@ -1,8 +1,10 @@
 <?php
 
-use App\Http\Controllers\DisplayController;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\DisplayController;
+use App\Http\Controllers\MediaController;
+use App\Http\Controllers\OlaController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,3 +25,4 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 })->name('dashboard');
 
 Route::resource('displays', DisplayController::class);
+Route::resource('medias', MediaController::class);

@@ -22,4 +22,13 @@ class Display extends Model
     {
         return $this->belongsToMany(Post::class)->withTimestamps();
     }
+
+    /**
+     * Returns the path (route) of this current model.
+     * @return string Path (URL) to the current model page
+     */
+    public function path()
+    {
+        return "/displays/{$this->id}";
+    }
 }

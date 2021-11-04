@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateDisplayRequest;
+use App\Http\Requests\CreateMediaRequest;
+use App\Models\Media;
+use App\Services\MediaService;
 use Illuminate\Http\Request;
 
-use App\Models\Display;
-
-class DisplayController extends Controller
+class MediaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -35,11 +35,15 @@ class DisplayController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateDisplayRequest $request)
+    public function store(CreateMediaRequest $request, MediaService $media_service)
     {
-        $display = Display::create($request->validated());
+        if(!$request->file->isValid()) {
+            return redirect()->back();
+        }
 
-        return redirect($display->path());
+        $media_service->store($request->file, $request->name, $request->description);
+
+        return redirect()->route('medias.index');
     }
 
     /**
@@ -71,11 +75,9 @@ class DisplayController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CreateDisplayRequest $request, Display $display)
+    public function update(Request $request, $id)
     {
-        $display->update($request->validated());
-
-        return redirect($display->path());
+        //
     }
 
     /**
@@ -84,10 +86,8 @@ class DisplayController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Display $display)
+    public function destroy($id)
     {
-        $display->delete();
-
-        return redirect()->route('displays.index');
+        //
     }
 }

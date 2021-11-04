@@ -14,23 +14,30 @@ class DisplayCrudTest extends TestCase
     /** @test */
     public function check_if_display_can_be_created()
     {
-        $this->withoutExceptionHandling();
-
-        $response = $this->post('/displays',[
+        $response = $this->post('/displays', [
             'name'     => 'Raspberry Mateus',
             'location' => 'Caxias do Sul'
         ]);
 
-        $response->assertOk();
+        $newlyCreatedDisplay = Display::first();
 
         $this->assertCount(1, Display::all());
+
+        $response->assertRedirect($newlyCreatedDisplay->path());
     }
 
     /** @test */
     public function check_if_display_name_verification_is_working()
     {
-        $response = $this->post('/displays',[
+        $response = $this->post('/displays', [
             'name'     => '',
+            'location' => 'Caxias do Sul'
+        ]);
+
+        $response->assertSessionHasErrors('name');
+
+        $response = $this->post('/displays',[
+            'name'     => 'g9jSjZGjFnd9lxIN4uUYdlFbH7xG77KE3MRRGkSu9Oe3WIEpBv07HmPRzxK5',
             'location' => 'Caxias do Sul'
         ]);
 
@@ -40,9 +47,16 @@ class DisplayCrudTest extends TestCase
     /** @test */
     public function check_if_display_location_verification_is_working()
     {
-        $response = $this->post('/displays',[
+        $response = $this->post('/displays', [
             'name'     => 'Teste',
             'location' => ''
+        ]);
+
+        $response->assertSessionHasErrors('location');
+
+        $response = $this->post('/displays', [
+            'name'     => 'Teste',
+            'location' => 'g9jSjZGjFnd9lxIN4uUYdlFbH7xG77KE3MRRGkSu9Oe3WIEpBv07HmPRzxK5'
         ]);
 
         $response->assertSessionHasErrors('location');
@@ -51,9 +65,7 @@ class DisplayCrudTest extends TestCase
     /** @test */
     public function check_if_a_display_can_be_updated()
     {
-        $this->withoutExceptionHandling();
-
-        $this->post('/displays',[
+        $this->post('/displays', [
             'name'     => 'Novo Display',
             'location' => 'Porto Alegre'
         ]);
@@ -72,14 +84,14 @@ class DisplayCrudTest extends TestCase
         // be only one entry in the database.
         $this->assertEquals('Antigo Display', Display::first()->name);
         $this->assertEquals('Caxias do Sul', Display::first()->location);
+
+        $response->assertRedirect($newlyCreatedDisplay->fresh()->path());
     }
 
     /** @test */
     public function check_if_a_display_can_be_deleted()
     {
-        $this->withoutExceptionHandling();
-
-        $this->post('/displays',[
+        $response = $this->post('/displays', [
             'name'     => 'Novo Display',
             'location' => 'Porto Alegre'
         ]);
@@ -91,5 +103,6 @@ class DisplayCrudTest extends TestCase
         $response = $this->delete("/displays/{$newlyCreatedDisplay->id}");        
 
         $this->assertCount(0, Display::all());
+        $response->assertRedirect('/displays');
     }
 }
