@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateDisplayRequest;
 use Illuminate\Http\Request;
 
 use App\Models\Display;
@@ -34,12 +35,9 @@ class DisplayController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateDisplayRequest $request)
     {
-        Display::create([
-            'name'     => $request->name,
-            'location' => $request->location
-        ]);
+        Display::create($request->validated());
     }
 
     /**
@@ -71,9 +69,9 @@ class DisplayController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CreateDisplayRequest $request, Display $display)
     {
-        //
+        $display->update($request->validated());
     }
 
     /**
@@ -82,8 +80,8 @@ class DisplayController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Display $display)
     {
-        //
+        $display->delete();
     }
 }
