@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Recurrence;
 use Illuminate\Database\Seeder;
 
-class RecurrenceSeeder extends Seeder
+use \App\Models\User;
+
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +15,7 @@ class RecurrenceSeeder extends Seeder
      */
     public function run()
     {
-        Recurrence::factory(100)->create();
+        User::factory()->intus_admin()->create();
+        User::factory(10)->create();
     }
 }

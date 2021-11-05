@@ -17,7 +17,7 @@ class MediaCrudTest extends TestCase
         $this->withoutExceptionHandling();
 
         $response = $this->post('/medias', [
-            'name'     => 'Papai Noel de branco dia 24.',
+            'name'        => 'Papai Noel de branco dia 24.',
             'description' => 'Imagem para ser colocada no dia 24 antes do Natal.',
         ]);
 
@@ -87,8 +87,8 @@ class MediaCrudTest extends TestCase
 
         // It's possible to use media::first() because there'll
         // be only one entry in the database.
-        $this->assertEquals('Antigo media', media::first()->name);
-        $this->assertEquals('Caxias do Sul', media::first()->location);
+        $this->assertEquals('Antigo media', Media::first()->name);
+        $this->assertEquals('Caxias do Sul', Media::first()->location);
     }
 
     /** @test */

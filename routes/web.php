@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\DisplayController;
 use App\Http\Controllers\MediaController;
-use App\Http\Controllers\OlaController;
+use App\Http\Controllers\PostController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,3 +26,4 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 Route::resource('displays', DisplayController::class);
 Route::resource('medias', MediaController::class);
+Route::resource('posts', PostController::class);

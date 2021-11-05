@@ -13,6 +13,6 @@ class DisplaySeeder extends Seeder
      */
     public function run()
     {
-        //
+        Display::factory(100)->create();
     }
 }
