@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateMediaRequest;
+use App\Http\Requests\UpdateMediaRequest;
 use App\Models\Media;
 use App\Services\MediaService;
 use Illuminate\Http\Request;
@@ -41,7 +42,7 @@ class MediaController extends Controller
             return redirect()->back();
         }
 
-        $media_service->store($request->file, $request->name, $request->description);
+        $media = $media_service->store($request->file, $request->name, $request->description);
 
         return redirect()->route('medias.index');
     }
@@ -75,9 +76,11 @@ class MediaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateMediaRequest $request, Media $media, MediaService $media_service)
     {
-        //
+        $media_service->update($request->name, $request->description, $media);
+
+        return redirect($media->path());
     }
 
     /**
@@ -86,8 +89,10 @@ class MediaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Media $media)
     {
-        //
+        $media->delete();
+
+        return redirect()->route('medias.index');
     }
 }

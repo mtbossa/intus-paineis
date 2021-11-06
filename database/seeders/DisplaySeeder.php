@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Display;
 use Illuminate\Database\Seeder;
 
 class DisplaySeeder extends Seeder

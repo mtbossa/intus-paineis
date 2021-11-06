@@ -34,7 +34,7 @@ class MediaFactory extends Factory
                 'extension' => 'jpeg',
                 'duration' => NULL,
                 'path'      => 'teste',
-                'type'      => 'image/jpeg',
+                'type'      => 'image',
             ];
         });
     }
@@ -46,7 +46,7 @@ class MediaFactory extends Factory
                 'extension' => 'png',
                 'duration' => NULL,
                 'path'      => 'teste',
-                'type'      => 'image/png',
+                'type'      => 'image',
             ];
         });
     }
@@ -58,7 +58,7 @@ class MediaFactory extends Factory
                 'extension' => 'mp4',
                 'duration' =>   rand(1000, 20000),
                 'path'      => 'teste',
-                'type'      => 'video/mp4',
+                'type'      => 'video',
             ];
         });
     }

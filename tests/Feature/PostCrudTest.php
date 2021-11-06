@@ -32,11 +32,11 @@ class PostCrudTest extends TestCase
             'recurrence_id' => $recurrence->id,
         ]);      
 
-        $posts = Post::all();
+        $post = Post::first();
   
-        $this->assertCount(1, $posts);
-        $this->assertInstanceOf(Carbon::class, Post::first()->start_date);
-        $this->assertEquals('2002-02-18', Post::first()->start_date->format('Y-m-d'));
-        $this->assertEquals('2003-02-18', Post::first()->end_date->format('Y-m-d'));
+        $this->assertModelExists($post);
+        $this->assertInstanceOf(Carbon::class, $post->start_date);
+        $this->assertEquals('2002-02-18', $post->start_date->format('Y-m-d'));
+        $this->assertEquals('2003-02-18', $post->end_date->format('Y-m-d'));
     }
 }

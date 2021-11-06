@@ -3,8 +3,13 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use App\Models\Media;
 
+use App\Models\Media;
+use App\Models\User;
+use App\Services\MediaService;
+
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class MediaCrudTest extends TestCase
@@ -16,14 +21,30 @@ class MediaCrudTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        Storage::fake('local');            
+
+        $file       = UploadedFile::fake()->image('teste_papai_noel.jpg')->size(200);
+
         $response = $this->post('/medias', [
             'name'        => 'Papai Noel de branco dia 24.',
             'description' => 'Imagem para ser colocada no dia 24 antes do Natal.',
-        ]);
+            'file'        => $file,
+        ]);  
 
-        $response->assertOk();
+        $this->assertDatabaseCount('medias', 1);
 
-        $this->assertCount(1, Media::all());
+        $media = Media::first();
+        
+        $this->assertNotNull($media->path);
+
+        Storage::disk('local')->assertExists($media->path);    
+        
+        $this->assertFileEquals($file, Storage::disk('local')->path($media->path));   
+         
+        $response->assertRedirect(route('medias.index'));
     }
 
     /** @test */
@@ -68,27 +89,16 @@ class MediaCrudTest extends TestCase
     /** @test */
     public function check_if_a_media_can_be_updated()
     {
-        $this->withoutExceptionHandling();
-
-        $this->post('/medias',[
-            'name'     => 'Novo media',
-            'location' => 'Porto Alegre'
-        ]);
-
-        // It's going to be the only entry in the database,
-        // so it can be selected with Diplay::first()
-        $newlyCreatedmedia = Media::first();
-
+        $media = Media::factory()->jpeg_image()->create();
         
-        $response = $this->patch("/medias/{$newlyCreatedmedia->id}", [
-            'name'     => 'Antigo media',
-            'location' => 'Caxias do Sul'
+        $response = $this->patch("/medias/{$media->id}", [
+            'name'        => 'Antigo media',
+            'description' => 'Caxias do Sul'
         ]);        
 
-        // It's possible to use media::first() because there'll
-        // be only one entry in the database.
-        $this->assertEquals('Antigo media', Media::first()->name);
-        $this->assertEquals('Caxias do Sul', Media::first()->location);
+        $this->assertEquals('Antigo media', $media->fresh()->name);
+        $this->assertEquals('Caxias do Sul', $media->fresh()->description);
+        $response->assertRedirect($media->path());
     }
 
     /** @test */
@@ -96,17 +106,11 @@ class MediaCrudTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $this->post('/medias',[
-            'name'     => 'Novo media',
-            'location' => 'Porto Alegre'
-        ]);
+        $media = Media::factory()->jpeg_image()->create();
 
-        // It's going to be the only entry in the database,
-        // so it can be selected with Diplay::first()
-        $newlyCreatedmedia = Media::first();
-        
-        $response = $this->delete("/medias/{$newlyCreatedmedia->id}");        
+        $response = $this->delete("/medias/{$media->id}");        
 
-        $this->assertCount(0, Media::all());
+        $this->assertDeleted($media);
+        $response->assertRedirect(route('medias.index'));
     }
 }

@@ -19,11 +19,10 @@ class DisplayCrudTest extends TestCase
             'location' => 'Caxias do Sul'
         ]);
 
-        $newlyCreatedDisplay = Display::first();
+        $display = Display::first();
 
-        $this->assertCount(1, Display::all());
-
-        $response->assertRedirect($newlyCreatedDisplay->path());
+        $this->assertModelExists($display); 
+        $response->assertRedirect($display->path());
     }
 
     /** @test */
@@ -72,10 +71,10 @@ class DisplayCrudTest extends TestCase
 
         // It's going to be the only entry in the database,
         // so it can be selected with Diplay::first()
-        $newlyCreatedDisplay = Display::first();
+        $display = Display::first();
 
         
-        $response = $this->patch("/displays/{$newlyCreatedDisplay->id}", [
+        $response = $this->patch("/displays/{$display->id}", [
             'name'     => 'Antigo Display',
             'location' => 'Caxias do Sul'
         ]);        
@@ -85,7 +84,7 @@ class DisplayCrudTest extends TestCase
         $this->assertEquals('Antigo Display', Display::first()->name);
         $this->assertEquals('Caxias do Sul', Display::first()->location);
 
-        $response->assertRedirect($newlyCreatedDisplay->fresh()->path());
+        $response->assertRedirect($display->fresh()->path());
     }
 
     /** @test */
@@ -96,13 +95,11 @@ class DisplayCrudTest extends TestCase
             'location' => 'Porto Alegre'
         ]);
 
-        // It's going to be the only entry in the database,
-        // so it can be selected with Diplay::first()
-        $newlyCreatedDisplay = Display::first();
+        $display = Display::first();
         
-        $response = $this->delete("/displays/{$newlyCreatedDisplay->id}");        
+        $response = $this->delete("/displays/{$display->id}");        
 
-        $this->assertCount(0, Display::all());
-        $response->assertRedirect('/displays');
+        $this->assertDeleted($display);
+        $response->assertRedirect(route('displays.index'));
     }
 }

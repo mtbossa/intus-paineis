@@ -22,11 +22,11 @@ class RecurrenceFactory extends Factory
     public function definition()
     {
         return [
-            'description' => $this->faker->text(rand(5, 50)),
-            'isoweekday'  => rand(1, 7),
-            'day'         => rand(1, 31),
-            'month'       => rand(1, 12),
-            'year'        => rand(2021, 2025),              
+            'description' => $this->faker->text(rand(5, 30)),
+            'isoweekday'  => $this->faker->boolean(50) ? rand(1, 7) : null, 
+            'day'         => $this->faker->boolean(50) ? rand(1, 31) : null,
+            'month'       => $this->faker->boolean(50) ? rand(1, 12) : null,
+            'year'        => $this->faker->boolean(50) ? rand(2021, 2025) : null,              
         ];
     }
 }
