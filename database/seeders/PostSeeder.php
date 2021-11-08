@@ -22,7 +22,7 @@ class PostSeeder extends Seeder
         $this->generateRecurrentVideoPosts();
     }
 
-    private function generateImagePosts()
+    public function generateImagePosts()
     {
         Media::factory()
             ->count(20)
@@ -35,7 +35,7 @@ class PostSeeder extends Seeder
             ->create();
     }
 
-    private function generateRecurrentImagePosts()
+    public function generateRecurrentImagePosts()
     {
         Media::factory()
             ->count(20)      
@@ -53,7 +53,7 @@ class PostSeeder extends Seeder
             ->create();
     }
 
-    private function generateVideoPosts()
+    public function generateVideoPosts()
     {
         Media::factory()
             ->count(20)
@@ -66,7 +66,7 @@ class PostSeeder extends Seeder
             ->create();
     }
 
-    private function generateRecurrentVideoPosts()
+    public function generateRecurrentVideoPosts()
     {
         Media::factory()
             ->count(20)

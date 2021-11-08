@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(UserSeeder::class);
         $this->call(DisplaySeeder::class);
+        // PostSeeder generates rows for medias, recurrences and posts tables
         $this->call(PostSeeder::class);
     }
 }
