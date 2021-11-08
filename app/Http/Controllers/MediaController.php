@@ -78,9 +78,9 @@ class MediaController extends Controller
      */
     public function update(UpdateMediaRequest $request, Media $media, MediaService $media_service)
     {
-        $media_service->update($request->name, $request->description, $media);
+        $updated_media = $media_service->update($request->name, $request->description, $media);
 
-        return redirect($media->path());
+        return redirect($updated_media->path());
     }
 
     /**

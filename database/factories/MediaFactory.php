@@ -27,11 +27,11 @@ class MediaFactory extends Factory
         ];
     }
 
-    public function jpeg_image()
+    public function image()
     {
         return $this->state(function (array $attributes) {
             return [
-                'extension' => 'jpeg',
+                'extension' => $this->faker->boolean(50) ? 'jpeg' : 'png',
                 'duration' => NULL,
                 'path'      => 'teste',
                 'type'      => 'image',
@@ -39,19 +39,7 @@ class MediaFactory extends Factory
         });
     }
 
-    public function png_image()
-    {
-        return $this->state(function (array $attributes) {
-            return [
-                'extension' => 'png',
-                'duration' => NULL,
-                'path'      => 'teste',
-                'type'      => 'image',
-            ];
-        });
-    }
-
-    public function mp4_video()
+    public function video()
     {
         return $this->state(function (array $attributes) {
             return [

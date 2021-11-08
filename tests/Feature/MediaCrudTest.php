@@ -6,7 +6,6 @@ use Tests\TestCase;
 
 use App\Models\Media;
 use App\Models\User;
-use App\Services\MediaService;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;

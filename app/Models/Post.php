@@ -53,7 +53,7 @@ class Post extends Model
      */
     public function setStartDateAttribute($attribute)
     { 
-        $this->attributes['start_date'] = Carbon::createFromFormat('d/m/Y', $attribute)->format('Y-m-d');
+        $this->attributes['start_date'] = ($attribute) ? Carbon::createFromFormat('d/m/Y', $attribute)->format('Y-m-d') : NULL;
     }
 
     /**
@@ -70,7 +70,7 @@ class Post extends Model
 
     public function setEndDateAttribute($attribute)
     { 
-        $this->attributes['end_date'] = Carbon::createFromFormat('d/m/Y', $attribute)->format('Y-m-d');
+        $this->attributes['end_date'] = ($attribute) ? Carbon::createFromFormat('d/m/Y', $attribute)->format('Y-m-d') : NULL;
     }
 
     public function getEndDateAttribute($attribute)

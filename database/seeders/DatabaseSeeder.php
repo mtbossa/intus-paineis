@@ -15,7 +15,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(UserSeeder::class);
         $this->call(DisplaySeeder::class);
-        $this->call(MediaSeeder::class);
-        $this->call(RecurrenceSeeder::class);
+        $this->call(PostSeeder::class);
     }
 }
