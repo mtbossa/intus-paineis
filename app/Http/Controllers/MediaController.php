@@ -89,9 +89,9 @@ class MediaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Media $media)
+    public function destroy(Media $media, MediaService $media_service)
     {
-        $media->delete();
+        $media_service->deleted($media);
 
         return redirect()->route('medias.index');
     }

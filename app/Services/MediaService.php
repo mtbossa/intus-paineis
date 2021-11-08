@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Owenoj\LaravelGetId3\GetId3;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class MediaService 
 {
@@ -22,10 +23,8 @@ class MediaService
         $filename      = self::generateFilename($name, $extension);
 
         $destination = 'medias/' . Auth::user()->id;
-
-        // TODO criar job para enviar para o s3 após salvar local primeiro e depois excluir local
         
-        $path = $file->storeAs($destination, $filename);
+        $path = $file->storeAs($destination, $filename, 's3');
         
         $media = Media::create([
             'name'        => $name,
@@ -47,6 +46,13 @@ class MediaService
         $media->save();
 
         return $media;
+    }
+
+    public function deleted(Media $media)
+    {
+        Storage::delete($media->path);
+
+        $media->delete();        
     }
 
     /**

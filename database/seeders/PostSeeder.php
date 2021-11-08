@@ -15,19 +15,22 @@ class PostSeeder extends Seeder
      * @return void
      */
     public function run()
-    {        
-        $this->generateImagePosts();
-        $this->generateRecurrentImagePosts();
-        $this->generateVideoPosts();
-        $this->generateRecurrentVideoPosts();
+    {   
+        $media_amount =  6;
+        $post_amount  =  6;    
+
+        $this->generateImagePosts($media_amount, $post_amount);
+        $this->generateRecurrentImagePosts($media_amount, $post_amount);
+        $this->generateVideoPosts($media_amount, $post_amount);
+        $this->generateRecurrentVideoPosts($media_amount, $post_amount);
     }
 
-    public function generateImagePosts()
+    public function generateImagePosts(int $media_amount, int $post_amount): void
     {
         Media::factory()
-            ->count(20)
+            ->count($media_amount)
             ->image()
-            ->hasPosts(3, function (array $attributes, Media $media) {
+            ->hasPosts($post_amount, function (array $attributes, Media $media) {
                 return [
                     'duration' => mt_rand(1000, 2000),
                 ];
@@ -35,14 +38,14 @@ class PostSeeder extends Seeder
             ->create();
     }
 
-    public function generateRecurrentImagePosts()
+    public function generateRecurrentImagePosts(int $media_amount, int $post_amount): void
     {
         Media::factory()
-            ->count(20)      
+            ->count($media_amount)      
             ->image()              
             ->has(
                 Post::factory()
-                        ->count(3)
+                        ->count($post_amount)
                         ->recurrent()
                         ->state(function (array $attributes, Media $media) {
                             return [
@@ -53,12 +56,12 @@ class PostSeeder extends Seeder
             ->create();
     }
 
-    public function generateVideoPosts()
+    public function generateVideoPosts(int $media_amount, int $post_amount): void
     {
         Media::factory()
-            ->count(20)
+            ->count($media_amount)
             ->video()
-            ->hasPosts(3, function (array $attributes, Media $media) {
+            ->hasPosts($post_amount, function (array $attributes, Media $media) {
                 return [
                     'duration' => $media->duration,
                 ];
@@ -66,14 +69,14 @@ class PostSeeder extends Seeder
             ->create();
     }
 
-    public function generateRecurrentVideoPosts()
+    public function generateRecurrentVideoPosts(int $media_amount, int $post_amount): void
     {
         Media::factory()
-            ->count(20)
+            ->count($media_amount)
             ->video()
             ->has(
                 Post::factory()
-                        ->count(3)
+                        ->count($post_amount)
                         ->recurrent()
                         ->state(function (array $attributes, Media $media) {
                             return [

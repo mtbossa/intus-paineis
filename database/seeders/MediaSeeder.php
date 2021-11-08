@@ -14,8 +14,7 @@ class MediaSeeder extends Seeder
      */
     public function run()
     {
-        Media::factory(50)->jpeg_image()->create();
-        Media::factory(50)->png_image()->create();
-        Media::factory(50)->mp4_video()->create();
+        Media::factory(50)->image()->create();
+        Media::factory(50)->video()->create();
     }
 }

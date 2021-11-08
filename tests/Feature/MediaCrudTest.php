@@ -23,9 +23,9 @@ class MediaCrudTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        Storage::fake('local');            
+        Storage::fake('s3');            
 
-        $file       = UploadedFile::fake()->image('teste_papai_noel.jpg')->size(200);
+        $file = UploadedFile::fake()->image('teste_papai_noel.jpg')->size(200);
 
         $response = $this->post('/medias', [
             'name'        => 'Papai Noel de branco dia 24.',
@@ -39,9 +39,9 @@ class MediaCrudTest extends TestCase
         
         $this->assertNotNull($media->path);
 
-        Storage::disk('local')->assertExists($media->path);    
+        Storage::disk('s3')->assertExists($media->path);    
         
-        $this->assertFileEquals($file, Storage::disk('local')->path($media->path));   
+        $this->assertFileEquals($file, Storage::disk('s3')->path($media->path));   
          
         $response->assertRedirect(route('medias.index'));
     }
@@ -88,7 +88,7 @@ class MediaCrudTest extends TestCase
     /** @test */
     public function check_if_a_media_can_be_updated()
     {
-        $media = Media::factory()->jpeg_image()->create();
+        $media = Media::factory()->image()->create();
         
         $response = $this->patch("/medias/{$media->id}", [
             'name'        => 'Antigo media',
@@ -97,6 +97,7 @@ class MediaCrudTest extends TestCase
 
         $this->assertEquals('Antigo media', $media->fresh()->name);
         $this->assertEquals('Caxias do Sul', $media->fresh()->description);
+
         $response->assertRedirect($media->path());
     }
 
@@ -105,11 +106,26 @@ class MediaCrudTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $media = Media::factory()->jpeg_image()->create();
+        $user = User::factory()->create();
+        $this->actingAs($user);
 
-        $response = $this->delete("/medias/{$media->id}");        
+        Storage::fake('s3');     
+
+        $response = $this->post('/medias', [
+            'name'        => 'Papai Noel de branco dia 24.',
+            'description' => 'Imagem para ser colocada no dia 24 antes do Natal.',
+            'file'        => UploadedFile::fake()->image('teste_papai_noel.jpg')->size(200),
+        ]);  
+
+        $this->assertDatabaseCount('medias', 1);
+
+        $media = Media::first();
+
+        $response = $this->delete($media->path());
 
         $this->assertDeleted($media);
+        Storage::disk('s3')->assertMissing($media->path);    
+
         $response->assertRedirect(route('medias.index'));
     }
 }
