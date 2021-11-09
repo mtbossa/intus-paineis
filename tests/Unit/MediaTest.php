@@ -13,17 +13,14 @@ class MediaTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function check_if_media_seed_png_image_is_working()
+    public function check_if_media_seed_test_image_is_working()
     {
         Media::factory()->count(50)->image()->create(); 
         
         $this->assertDatabaseCount('medias', 50);
         $this->assertDatabaseHas('medias', [
-            'extension' => 'png'
-        ]);
-        $this->assertDatabaseHas('medias', [
-            'extension' => 'jpeg'
-        ]);
+            'extension' => 'jpg'
+        ]);        
     }
 
     /** @test */

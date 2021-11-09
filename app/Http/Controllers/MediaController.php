@@ -6,7 +6,7 @@ use App\Http\Requests\CreateMediaRequest;
 use App\Http\Requests\UpdateMediaRequest;
 use App\Models\Media;
 use App\Services\MediaService;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 
 class MediaController extends Controller
 {
@@ -30,15 +30,9 @@ class MediaController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(CreateMediaRequest $request, MediaService $media_service)
+    public function store(CreateMediaRequest $request, MediaService $media_service): RedirectResponse
     {
-        if(!$request->file->isValid()) {
+        if(!$request->file->isValid() || !$request->validated()) {
             return redirect()->back();
         }
 
@@ -69,29 +63,20 @@ class MediaController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateMediaRequest $request, Media $media, MediaService $media_service)
+    public function update(UpdateMediaRequest $request, Media $media, MediaService $media_service): RedirectResponse
     {
+        if(!$request->validated()) {        
+            return redirect()->back();
+        }
+        
         $updated_media = $media_service->update($request->name, $request->description, $media);
 
         return redirect($updated_media->path());
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Media $media, MediaService $media_service)
+    public function destroy(Media $media, MediaService $media_service): RedirectResponse
     {
-        $media_service->deleted($media);
+        $media_service->delete($media);
 
         return redirect()->route('medias.index');
     }

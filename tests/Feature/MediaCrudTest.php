@@ -88,6 +88,8 @@ class MediaCrudTest extends TestCase
     /** @test */
     public function check_if_a_media_can_be_updated()
     {
+        $this->withoutExceptionHandling();
+        
         $media = Media::factory()->image()->create();
         
         $response = $this->patch("/medias/{$media->id}", [

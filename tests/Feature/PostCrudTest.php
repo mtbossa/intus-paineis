@@ -19,7 +19,7 @@ class PostCrudTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $media      = Media::factory()->jpeg_image()->create();
+        $media      = Media::factory()->image()->create();
         $recurrence = Recurrence::factory()->create();
         
         $response = $this->post('/posts', [
