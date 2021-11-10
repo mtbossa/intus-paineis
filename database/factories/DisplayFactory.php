@@ -23,7 +23,16 @@ class DisplayFactory extends Factory
     {
         return [
             'name'     => $this->faker->text(rand(5, 50)),
-            'location' => $this->faker->text(rand(5, 50)),
+            'location' => $this->generateLocation(),
         ];
+    }
+
+    private function generateLocation()
+    {
+        $city = $this->faker->city();
+        $state = $this->faker->state();
+        $street = $this->faker->streetAddress();
+
+        return "$street - $city, $state";
     }
 }

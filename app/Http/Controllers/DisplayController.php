@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateDisplayRequest;
-use Illuminate\Http\Request;
 
 use App\Models\Display;
 use Illuminate\Http\RedirectResponse;
@@ -16,8 +15,10 @@ class DisplayController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        //
+    {        
+        return view('app.displays.index', [
+            'displays' => Display::paginate(15),
+        ]);
     }
 
     /**
