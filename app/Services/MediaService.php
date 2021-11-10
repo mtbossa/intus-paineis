@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Jobs\MediaS3UploadProcess;
 use Carbon\Carbon;
 use App\Models\Media;
 use Illuminate\Support\Str;
@@ -23,17 +24,21 @@ class MediaService
         $filename      = self::generateFilename($media_name, $extension);
 
         $destination = 'medias/' . Auth::user()->id;
-        
-        $path = $file->storeAs($destination, $filename, 's3');
-        
+
         $media = Media::create([
             'name'        => $media_name,
             'description' => $description,
             'duration'    => $file_duration,            
             'type'        => $type,            
             'extension'   => $extension,
-            'path'        => $path,
         ]);
+     
+        MediaS3UploadProcess::dispatch(
+            file: $file,
+            destination: $destination,
+            filename: $filename,
+            media: $media
+        );
 
         return $media;
     }
