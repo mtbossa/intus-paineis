@@ -25,6 +25,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
+    Route::view('/test', 'test');
+
     Route::resource('displays', DisplayController::class);
     Route::resource('medias', MediaController::class);
     Route::resource('posts', PostController::class);
