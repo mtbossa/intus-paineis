@@ -52,14 +52,14 @@ class DisplayController extends Controller
 
     public function edit(Display $display): View
     {
-        return view('app.displays.edit', $display);
+        return view('app.displays.edit', ['display' => $display]);
     }
 
     public function update(CreateDisplayRequest $request, Display $display): RedirectResponse
     {
         $display->update($request->validated());
 
-        return redirect($display->path());
+        return redirect($display->path() . '/edit');
     }
 
     public function destroy(Display $display): RedirectResponse

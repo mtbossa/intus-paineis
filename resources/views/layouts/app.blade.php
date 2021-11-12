@@ -27,8 +27,6 @@
         <div class="min-h-screen bg-gray-100">
             <!-- livewire Navbar (jetstream) -->
             {{-- @livewire('navigation-menu') --}}
-            <!-- daisyui Navbar -->
-            {{-- <x-daisyui-navbar></x-daisyui-navbar> --}}
             <x-navbar></x-navbar>
 
             <!-- Page Heading -->

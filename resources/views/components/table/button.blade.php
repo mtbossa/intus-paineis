@@ -23,8 +23,7 @@ $class = "$color hover:$color_hover w-16 rounded text-center";
     @if ($action === 'excluir')
         <button onClick="
             event.preventDefault();
-            document.getElementById('delete-display-form-{{ $modelId }}')
-                .submit();
+            document.getElementById('delete-display-form-{{ $modelId }}').submit();
         " 
         type="button"
         class="{{ $class }}">

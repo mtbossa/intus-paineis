@@ -20,7 +20,7 @@
                             <x-table.cell>{{ $display->id }}</x-table.cell>
                             <x-table.cell>{{ $display->name }}</x-table.cell>
                             <x-table.cell>{{ $display->location }}</x-table.cell>                            
-                            <x-table.button action="editar">{{ route('displays.edit', $display->id) }}</x-table.button>                            
+                            <x-table.button action="editar" :test="request()->routeIs('displays.index')">{{ route('displays.edit', $display->id) }}</x-table.button>                            
                             <x-table.button action="excluir" model-id="{{ $display->id }}"></x-table.button>                            
                         </x-table.row>
                     @endforeach  
