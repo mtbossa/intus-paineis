@@ -3,13 +3,23 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\User;
 
 use App\Models\Display;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class DisplayCrudTest extends TestCase
 {
     use RefreshDatabase;
+
+    private $user;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        
+        $this->actingAs(User::factory()->create());
+    }
 
     /** @test */
     public function check_if_display_can_be_created()

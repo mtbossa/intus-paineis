@@ -1,7 +1,3 @@
-<td class="px-4 py-3 border">
-    <div class="flex items-center text-sm">    
-        <div>
-            <p class="font-semibold text-black">{{ $slot }}</p>
-        </div>
-    </div>
-</td>
+<td class="px-6 py-4 whitespace-nowrap">
+    <div class="text-sm text-gray-900">{{ $slot }}</div>  
+</td> 

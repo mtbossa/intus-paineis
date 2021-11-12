@@ -17,12 +17,18 @@
 
         <!-- Scripts -->
         <script src="{{ mix('js/app.js') }}" defer></script>
+
+        <!-- Scripts from pages -->
+        @stack('head')
     </head>
     <body class="font-sans antialiased">
         <x-jet-banner />
 
         <div class="min-h-screen bg-gray-100">
+            <!-- livewire Navbar (jetstream) -->
             {{-- @livewire('navigation-menu') --}}
+            <!-- daisyui Navbar -->
+            {{-- <x-daisyui-navbar></x-daisyui-navbar> --}}
             <x-navbar></x-navbar>
 
             <!-- Page Heading -->

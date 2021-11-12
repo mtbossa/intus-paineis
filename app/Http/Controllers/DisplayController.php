@@ -6,6 +6,7 @@ use App\Http\Requests\CreateDisplayRequest;
 
 use App\Models\Display;
 use Illuminate\Http\RedirectResponse;
+use \Illuminate\Contracts\View\View;
 
 class DisplayController extends Controller
 {
@@ -26,9 +27,9 @@ class DisplayController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
-        //
+        return view('app.displays.create');
     }
 
     public function store(CreateDisplayRequest $request): RedirectResponse
@@ -49,15 +50,9 @@ class DisplayController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function edit(Display $display): View
     {
-        //
+        return view('app.displays.edit', $display);
     }
 
     public function update(CreateDisplayRequest $request, Display $display): RedirectResponse
@@ -69,6 +64,7 @@ class DisplayController extends Controller
 
     public function destroy(Display $display): RedirectResponse
     {
+        
         $display->delete();
 
         return redirect()->route('displays.index');

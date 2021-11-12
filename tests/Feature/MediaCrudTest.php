@@ -17,14 +17,21 @@ class MediaCrudTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
+    private $user;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        
+        $this->actingAs(User::factory()->create());
+    }
+
     /** @test */
     public function check_if_media_can_be_created()
     {
         Bus::fake();
-        Storage::fake('s3'); 
-     
-        $this->actingAs(User::factory()->create());
-
+        Storage::fake('s3');   
+        
         $file = UploadedFile::fake()->image('teste_papai_noel.jpg')->size(200);
 
         $response = $this->post('/medias', [

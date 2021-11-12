@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Post;
+use App\Models\User;
 use App\Models\Media;
 use App\Models\Recurrence;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -13,6 +14,15 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class PostCrudTest extends TestCase
 {
     use RefreshDatabase;
+
+    private $user;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        
+        $this->actingAs(User::factory()->create());
+    }
 
     /** @test */
     public function check_if_post_can_be_created()
