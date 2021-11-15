@@ -1,33 +1,29 @@
 @props(['action', 'modelId'])
 
 @php
-$text = ucfirst($action);
-
 $action = strtolower($action);
 
 switch ($action) {
-    case 'excluir':
-        $color       = 'bg-red-500';
-        $color_hover = 'bg-red-600';
+    case 'delete':
+        $colors = 'text-red-500 hover:text-red-700';
         break;
     default:
-        $color       = 'bg-blue-500';
-        $color_hover = 'bg-blue-700';
+        $colors = 'text-blue-500 hover:text-blue-700';
         break;
 }
 
-$class = "$color hover:$color_hover w-16 rounded text-center";
+$class = "$colors text-center px-2";
 @endphp
 
 <td>
-    @if ($action === 'excluir')
+    @if ($action === 'delete')
         <button onClick="
             event.preventDefault();
             document.getElementById('delete-display-form-{{ $modelId }}').submit();
         " 
         type="button"
         class="{{ $class }}">
-            Excluir
+            {{ $text }}
         </button>
 
         <form action="{{ route('displays.destroy', $modelId) }}" id="delete-display-form-{{ $modelId }}"
@@ -36,7 +32,7 @@ $class = "$color hover:$color_hover w-16 rounded text-center";
             @method('DELETE');
         </form>
     @else
-        <a href="{{ $slot }}">
+        <a href="{{ route('displays.edit', $modelId) }}">
             <div class="{{ $class }}">
                 {{ $text }}
             </div>

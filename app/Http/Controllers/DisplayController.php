@@ -36,7 +36,7 @@ class DisplayController extends Controller
     {
         $display = Display::create($request->validated());
 
-        return redirect($display->path());
+        return redirect(route('displays.index'))->with('sucess', __('messages.display_created'));
     }
 
     /**
@@ -59,14 +59,13 @@ class DisplayController extends Controller
     {
         $display->update($request->validated());
 
-        return redirect($display->path() . '/edit');
+        return redirect($display->path() . '/edit')->with('sucess', __('messages.display_updated'));
     }
 
     public function destroy(Display $display): RedirectResponse
-    {
-        
+    {       
         $display->delete();
 
-        return redirect()->route('displays.index');
+        return redirect()->route('displays.index')->with('sucess', __('messages.display_deleted'));
     }
 }

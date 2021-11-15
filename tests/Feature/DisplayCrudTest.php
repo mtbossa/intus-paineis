@@ -32,7 +32,8 @@ class DisplayCrudTest extends TestCase
         $display = Display::first();
 
         $this->assertModelExists($display); 
-        $response->assertRedirect($display->path());
+        $response->assertRedirect(route('displays.index'))
+                ->assertSessionHas('sucess', 'Display criado com sucesso!');
     }
 
     /** @test */
@@ -94,7 +95,8 @@ class DisplayCrudTest extends TestCase
         $this->assertEquals('Antigo Display', Display::first()->name);
         $this->assertEquals('Caxias do Sul', Display::first()->location);
 
-        $response->assertRedirect($display->fresh()->path());
+        $response->assertRedirect($display->fresh()->path() . '/edit')
+                    ->assertSessionHas('sucess', 'Display atualizado com sucesso!');
     }
 
     /** @test */
@@ -110,6 +112,7 @@ class DisplayCrudTest extends TestCase
         $response = $this->delete("/displays/{$display->id}");        
 
         $this->assertDeleted($display);
-        $response->assertRedirect(route('displays.index'));
+        $response->assertRedirect(route('displays.index'))
+                    ->assertSessionHas('sucess', 'Display excluído com sucesso!');
     }
 }
