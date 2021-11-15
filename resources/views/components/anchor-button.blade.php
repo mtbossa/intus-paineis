@@ -1,4 +1,4 @@
-@props(['buttonType' => '', 'size' => null])
+@props(['buttonType' => '', 'icon' => ''])
 
 @php
     switch($buttonType): 
@@ -13,9 +13,10 @@
             break;
     endswitch;
 
-    $class = "$colors $size w-min inline-block flex justify-center items-center px-4 py-2 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ";
+    $class = "$colors w-min inline-block flex justify-center items-center px-4 py-2 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg ";
 @endphp
 
 <a {{ $attributes->merge(['class' => $class]) }}> 
+    <i class="{{ $icon }} mr-2"></i>
     {{ $slot }}      
 </a>
