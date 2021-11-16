@@ -31,4 +31,9 @@ class Media extends Model
     {
         return "/medias/{$this->id}";
     }
+
+    public function getTypeAttribute($attribute)
+    { 
+        return ($attribute === 'image') ? 'imagem' : 'vídeo';
+    }
 }

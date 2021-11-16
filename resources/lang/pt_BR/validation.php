@@ -155,7 +155,8 @@ return [
 
     'attributes' => [
         'name'     => 'nome',
-        'location' => 'localização'
+        'location' => 'localização',
+        'file'     => 'arquivo',
     ],
 
 ];

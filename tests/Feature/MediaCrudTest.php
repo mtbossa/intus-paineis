@@ -6,7 +6,7 @@ use Tests\TestCase;
 
 use App\Models\User;
 use App\Models\Media;
-
+use App\Services\MediaService;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Storage;
@@ -22,17 +22,23 @@ class MediaCrudTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        
-        $this->actingAs(User::factory()->create());
+
+        $this->user = User::factory()->create();
+
+        $this->actingAs($this->user);
     }
 
     /** @test */
     public function check_if_media_can_be_created()
     {
+        $this->withoutExceptionHandling();
         Bus::fake();
+        Storage::fake('local');   
         Storage::fake('s3');   
         
         $file = UploadedFile::fake()->image('teste_papai_noel.jpg')->size(200);
+        $filename = MediaService::generateFilename('Papai Noel de branco dia 24.', 'jpg');
+
 
         $response = $this->post('/medias', [
             'name'        => 'Papai Noel de branco dia 24.',
@@ -44,7 +50,9 @@ class MediaCrudTest extends TestCase
 
         $media = Media::first();
         
-        $this->assertNull($media->path);    
+        $this->assertNull($media->path);   
+        
+        Storage::disk('local')->assertExists("tmp/{$this->user->id}/$filename");
          
         $response->assertRedirect(route('medias.index'));
     }

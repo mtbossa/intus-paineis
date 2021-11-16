@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\Media;
 
+use Illuminate\Http\File;
 use Illuminate\Bus\Queueable;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Queue\SerializesModels;
@@ -23,7 +24,7 @@ class MediaS3UploadProcess implements ShouldQueue
      * @return void
      */
     public function __construct(
-        public UploadedFile $file,
+        public string $tmp_path,
         public Media $media,
         public string $destination,
         public string $filename,        
@@ -36,12 +37,15 @@ class MediaS3UploadProcess implements ShouldQueue
      */
     public function handle()
     {
-        $path = $this->destination . '/' . $this->filename;
+        $this->tmp_path = Storage::disk('local')->path($this->tmp_path);
 
-        $s3 = Storage::disk('s3');        
-        $s3->put($path, file_get_contents($this->file), 'public');
+        $path = "{$this->destination}/{$this->filename}";
+
+        $path_s3 = Storage::putFileAs($this->destination, new File($this->tmp_path), $this->filename, 'public');
 
         $this->media->path = $path;
         $this->media->save();
+
+        $local->delete($this->tmp_path);
     }
 }

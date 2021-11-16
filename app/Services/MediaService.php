@@ -24,6 +24,13 @@ class MediaService
         $filename      = self::generateFilename($media_name, $extension);
 
         $destination = 'medias/' . Auth::user()->id;
+        $tmp_folder  = 'tmp/' . Auth::user()->id;
+
+        $tmp_path = $file->storeAs(
+            $tmp_folder,
+            $filename,
+            'local'
+        );
 
         $media = Media::create([
             'name'        => $media_name,
@@ -34,7 +41,7 @@ class MediaService
         ]);
      
         MediaS3UploadProcess::dispatch(
-            file: $file,
+            tmp_path: $tmp_path,
             destination: $destination,
             filename: $filename,
             media: $media

@@ -1,0 +1,62 @@
+<x-app-layout> 
+    <x-slot name="header">      
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            Mídias
+        </h2>
+
+        @if(session('sucess'))
+            <x-notification model="media">            
+                {{ session('sucess') }}            
+            </x-notification>
+        @endif
+
+    </x-slot>
+
+    <x-containers.main>  
+        <x-slot name="buttons">
+            <x-containers.buttons>
+                <x-anchor-button                  
+                    href="{{ route('medias.create') }}"
+                    button-type="new"  
+                    icon="fas fa-plus"                    
+                >                                                  
+                    Novo 
+                </x-anchor-button>                 
+            </x-containers.buttons>
+        </x-slot>
+
+        <x-table>
+            <x-slot name="heading">  
+                <x-table.heading>ID</x-table.heading>
+                <x-table.heading>Nome</x-table.heading>
+                <x-table.heading>Descrição</x-table.heading>
+                <x-table.heading>Tipo</x-table.heading>
+                <x-table.heading>Progresso</x-table.heading>
+            </x-slot>
+            @foreach ($medias as $media)
+                <x-table.row>
+                    <x-table.cell>{{ $media->id }}</x-table.cell>
+                    <x-table.cell>{{ $media->name }}</x-table.cell>
+                    <x-table.cell>{{ $media->description }}</x-table.cell>
+                    <x-table.cell>{{ ucfirst($media->type) }}</x-table.cell>
+                    <x-table.cell>{{ ($media->path) ? 'Concluído' : 'Em progresso' }}</x-table.cell>
+                    <x-table.button action="edit" model-id="{{ $media->id }}">                        
+                        <x-slot name="text">
+                            Editar
+                        </x-slot>
+                    </x-table.button>                            
+                    <x-table.button action="delete" model-id="{{ $media->id }}">
+                        <x-slot name="text">
+                            Excluir
+                        </x-slot>
+                    </x-table.button>                            
+                </x-table.row>
+            @endforeach  
+        </x-table>
+
+        <div class="py-3 px-3">
+            {{ $medias->links() }}
+        </div>    
+
+    </x-containers.main>
+</x-app-layout>

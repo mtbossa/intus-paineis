@@ -17,7 +17,9 @@ class MediaController extends Controller
      */
     public function index()
     {
-        //
+        return view('app.medias.index', [
+            'medias' => Media::paginate(15)
+        ]);        
     }
 
     /**
@@ -27,7 +29,7 @@ class MediaController extends Controller
      */
     public function create()
     {
-        //
+        return view('app.medias.create');
     }
 
     public function store(CreateMediaRequest $request, MediaService $media_service): RedirectResponse

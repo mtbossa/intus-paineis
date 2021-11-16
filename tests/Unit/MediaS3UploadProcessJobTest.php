@@ -22,16 +22,25 @@ class MediaS3UploadProcessJobTest extends TestCase
 
         Bus::fake();
         Storage::fake('s3'); 
+        Storage::fake('local'); 
 
         $user = User::factory()->create();
         $this->actingAs($user);
 
         $file = UploadedFile::fake()->image('teste_papai_noel.jpg')->size(200);   
-        
-        $media = Media::factory()->image()->create(['path' => NULL]);
+
+        $path = $file->storeAs(
+            'tmp/1',
+            'teste.jpg',
+            'local'
+        );
+
+        $media = Media::factory()->image()->create([
+            'path' => NULL
+        ]);
 
         MediaS3UploadProcess::dispatch(
-            file: $file,
+            tmp_path: $path,
             destination: 'medias/1',
             filename: 'teste.png',
             media: $media
@@ -45,16 +54,25 @@ class MediaS3UploadProcessJobTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
+        Storage::fake('local'); 
         Storage::fake('s3'); 
 
-        $file = UploadedFile::fake()->image('teste_papai_noel.jpg')->size(200);   
+        $file = UploadedFile::fake()->image('teste_papai_noel.jpg')->size(200);  
+        
+        $path = $file->storeAs(
+            'tmp/1',
+            'teste.jpg',
+            'local'
+        );
+
+        Storage::disk('local')->assertExists($path);   
         
         $media = Media::factory()->image()->create([
             'path' => NULL
         ]);
 
         $process = new MediaS3UploadProcess(
-            file: $file,
+            tmp_path: $path,
             destination: 'medias/1',
             filename: 'teste.png',
             media: $media
@@ -62,10 +80,11 @@ class MediaS3UploadProcessJobTest extends TestCase
 
         $process->handle();       
 
-         // assert file exists and model is updated
+        // assert file exists and model is updated
         $this->assertDatabaseCount('medias', 1);
         $this->assertNotNull($media->path);
 
         Storage::disk('s3')->assertExists($media->path);    
+        Storage::disk('local')->assertMissing($path);    
     } 
 }

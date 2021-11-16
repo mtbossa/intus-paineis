@@ -36,7 +36,7 @@ class DisplayController extends Controller
     {
         $display = Display::create($request->validated());
 
-        return redirect(route('displays.index'))->with('sucess', __('messages.display_created'));
+        return redirect()->route('displays.index')->with('sucess', __('messages.display_created'));
     }
 
     /**
