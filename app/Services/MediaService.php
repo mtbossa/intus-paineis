@@ -14,9 +14,7 @@ use Livewire\TemporaryUploadedFile;
 class MediaService 
 {
     public function store(TemporaryUploadedFile $file, string $media_name, string $description): Media
-    {
-        
-               
+    {        
         $file_object = new GetId3($file->getRealPath());
         $file_info     = $file_object->extractInfo();
 

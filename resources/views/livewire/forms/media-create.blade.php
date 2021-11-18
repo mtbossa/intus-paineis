@@ -39,12 +39,15 @@
                     Arquivo (mídia)
                 </x-form.label>
             </x-slot>
-            <x-form.filepond wire:model="media" allowImagePreview
-            imagePreviewMaxHeight="200"
-            allowFileTypeValidation
-            acceptedFileTypes="['image/png', 'image/jpg']"
-            allowFileSizeValidation
-            maxFileSize="100mb"/>
+            <x-form.filepond 
+                wire:model="media"
+                allowImagePreview
+                imagePreviewMaxHeight="200"
+                allowFileTypeValidation
+                acceptedFileTypes="['image/jpg', 'image/jpeg', 'image/png', 'video/mp4']"
+                allowFileSizeValidation
+                maxFileSize="100mb"
+            />
         </x-form.field>
     
     </x-form>  

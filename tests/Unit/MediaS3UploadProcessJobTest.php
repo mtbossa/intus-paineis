@@ -52,15 +52,19 @@ class MediaS3UploadProcessJobTest extends TestCase
     /** @test */
     public function assert_media_upload_s3_process_handle_method_is_working()
     {
-        $this->withoutExceptionHandling();
+        // $this->withoutExceptionHandling();
+
+        $user = User::factory()->create();
+        $this->actingAs($user);
 
         Storage::fake('local'); 
         Storage::fake('s3'); 
 
         $file = UploadedFile::fake()->image('teste_papai_noel.jpg')->size(200);  
-        
+        $tmp_folder  = 'tmp/medias/uploads/' . $user->id;
+
         $path = $file->storeAs(
-            'tmp/1',
+            $tmp_folder,
             'teste.jpg',
             'local'
         );

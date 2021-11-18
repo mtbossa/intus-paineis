@@ -37,15 +37,13 @@ class MediaS3UploadProcess implements ShouldQueue
      */
     public function handle()
     {
-        $this->tmp_path = Storage::disk('local')->path($this->tmp_path);
+        $complete_tmp_path = Storage::disk('local')->path($this->tmp_path);
 
-        $path = "{$this->destination}/{$this->filename}";
+        $path_s3 = Storage::disk('s3')->putFileAs($this->destination, new File($complete_tmp_path), $this->filename, 'public');
 
-        $path_s3 = Storage::putFileAs($this->destination, new File($this->tmp_path), $this->filename, 'public');
-
-        $this->media->path = $path;
+        $this->media->path = $path_s3;
         $this->media->save();
 
-        $local->delete($this->tmp_path);
+        Storage::disk('local')->delete($this->tmp_path);
     }
 }
