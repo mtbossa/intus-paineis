@@ -31,7 +31,7 @@
                 <x-table.heading>Nome</x-table.heading>
                 <x-table.heading>Descrição</x-table.heading>
                 <x-table.heading>Tipo</x-table.heading>
-                <x-table.heading>Progresso</x-table.heading>
+                <x-table.heading>Status</x-table.heading>
             </x-slot>
             @foreach ($medias as $media)
                 <x-table.row>
@@ -39,7 +39,17 @@
                     <x-table.cell>{{ $media->name }}</x-table.cell>
                     <x-table.cell>{{ $media->description }}</x-table.cell>
                     <x-table.cell>{{ ucfirst($media->type) }}</x-table.cell>
-                    <x-table.cell>{{ ($media->path) ? 'Concluído' : 'Em progresso' }}</x-table.cell>
+                    <x-table.cell>
+                        @isset($media->path)
+                            <x-badge class="w-32 bg-green-500">
+                                Disponível
+                            </x-badge>
+                        @else
+                            <x-badge class="w-32 bg-blue-500">
+                                Em progresso
+                            </x-badge>
+                        @endisset
+                    </x-table.cell>
                     <x-table.button action="edit" model-id="{{ $media->id }}">                        
                         <x-slot name="text">
                             Editar
