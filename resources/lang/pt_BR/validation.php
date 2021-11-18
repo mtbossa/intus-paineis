@@ -84,7 +84,7 @@ return [
         'string' => 'O campo :attribute não pode ter mais do que :max caracteres.',
         'array' => 'The :attribute must not have more than :max items.',
     ],
-    'mimes' => 'The :attribute must be a file of type: :values.',
+    'mimes' => 'A :attribute deve ser do tipo: :values.',
     'mimetypes' => 'The :attribute must be a file of type: :values.',
     'min' => [
         'numeric' => 'The :attribute must be at least :min.',
@@ -157,6 +157,8 @@ return [
         'name'     => 'nome',
         'location' => 'localização',
         'file'     => 'arquivo',
+        'media'     => 'mídia',
+        'description' => 'descrição',
     ],
 
 ];

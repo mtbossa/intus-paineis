@@ -7,30 +7,34 @@ use Carbon\Carbon;
 use App\Models\Media;
 use Illuminate\Support\Str;
 use Owenoj\LaravelGetId3\GetId3;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Livewire\TemporaryUploadedFile;
 
 class MediaService 
 {
-    public function store(UploadedFile $file, string $media_name, string $description): Media
+    public function store(TemporaryUploadedFile $file, string $media_name, string $description): Media
     {
-        $file_object = new GetId3($file);
+        
+               
+        $file_object = new GetId3($file->getRealPath());
         $file_info     = $file_object->extractInfo();
 
         $file_duration = $file_object->getPlaytimeSeconds() * 1000; // Saved as milliseconds
         $type          = (str_contains($file_info['mime_type'], 'video')) ? 'video' : 'image'; 
         $extension     = $file_info['fileformat'];   
-        $filename      = self::generateFilename($media_name, $extension);
+        $filename     = self::generateFilename($media_name, $extension);
 
-        $destination = 'medias/' . Auth::user()->id;
-        $tmp_folder  = 'tmp/' . Auth::user()->id;
+        $tmp_folder  = 'tmp/medias/uploads/' . Auth::user()->id;
+        $destination = 'medias/' . Auth::user()->id;        
 
         $tmp_path = $file->storeAs(
             $tmp_folder,
             $filename,
             'local'
         );
+
+        $file->delete();
 
         $media = Media::create([
             'name'        => $media_name,
@@ -40,12 +44,7 @@ class MediaService
             'extension'   => $extension,
         ]);
      
-        MediaS3UploadProcess::dispatch(
-            tmp_path: $tmp_path,
-            destination: $destination,
-            filename: $filename,
-            media: $media
-        );
+        MediaS3UploadProcess::dispatch($tmp_path, $media, $destination, $filename);
 
         return $media;
     }

@@ -6,7 +6,8 @@
     </x-slot>
 
     <x-containers.main>   
-        <x-media.form action="{{ route('medias.store') }}" method="POST" enctype="multipart/form-data">
-        </x-media.form>    
+        {{-- <x-media.form action="{{ route('medias.store') }}" method="POST" enctype="multipart/form-data">
+        </x-media.form>     --}}
+        <livewire:forms.media-create />
     </x-containers.main>
 </x-app-layout>

@@ -32,8 +32,9 @@ class CreateMediaRequest extends FormRequest
                 'required',
                 'max:100',
             ],            
-            'file' => [
+            'media' => [
                 'required',                
+                'max:100000',              
             ],            
         ];
     }
