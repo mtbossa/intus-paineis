@@ -23,8 +23,8 @@ class CreatePostsTable extends Migration
             $table->datetime('end_date')->nullable();
             $table->time('start_time');
             $table->time('end_time');
-            $table->foreignIdFor(Media::class)->constrained('medias');
-            $table->foreignIdFor(Recurrence::class)->nullable()->constrained('recurrences');
+            $table->foreignIdFor(Media::class)->constrained('medias')->onDelete('cascade');
+            $table->foreignIdFor(Recurrence::class)->nullable()->constrained('recurrences')->onDelete('cascade');
             $table->timestamps();
         });
     }

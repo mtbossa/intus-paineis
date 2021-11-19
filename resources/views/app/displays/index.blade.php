@@ -25,23 +25,23 @@
             </x-containers.buttons>
         </x-slot>
 
-        <x-table>
+        <x-table model-name="display" >
             <x-slot name="heading">  
                 <x-table.heading>ID</x-table.heading>
                 <x-table.heading>Nome</x-table.heading>
                 <x-table.heading colspan="3">Localização</x-table.heading>
             </x-slot>
             @foreach ($displays as $display)
-                <x-table.row>
+                <x-table.row :model="$display">
                     <x-table.cell>{{ $display->id }}</x-table.cell>
                     <x-table.cell>{{ $display->name }}</x-table.cell>
                     <x-table.cell>{{ $display->location }}</x-table.cell>                            
-                    <x-table.button action="edit" model-id="{{ $display->id }}">                        
+                    <x-table.button action="edit" model-name="display">                        
                         <x-slot name="text">
                             Editar
                         </x-slot>
                     </x-table.button>                            
-                    <x-table.button action="delete" model-id="{{ $display->id }}">
+                    <x-table.button action="delete">
                         <x-slot name="text">
                             Excluir
                         </x-slot>

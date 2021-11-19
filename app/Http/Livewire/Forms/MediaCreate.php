@@ -18,7 +18,7 @@ class MediaCreate extends Component
     protected $rules = [
         'name'        => 'required|min:6|max:50',
         'description' => 'required|min:6|max:100',
-        'media'       => 'required|mimes:avi,mp4,jpg,jpeg,png|max:100000',
+        'media'       => 'required|mimes:avi,mp4,jpg,jpeg,png|max:102400',
     ];
 
     public function render()
@@ -29,7 +29,7 @@ class MediaCreate extends Component
     public function updatedMedia()
     {
         $this->validate([
-            'media' => 'mimes:avi,mp4,jpg,jpeg,png|max:100000', // 1MB Max
+            'media' => 'mimes:avi,mp4,jpg,jpeg,png|max:102400', // 100MB Max
         ]);
     }
 

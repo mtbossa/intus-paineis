@@ -40,7 +40,7 @@ class MediaS3UploadProcessJobTest extends TestCase
         ]);
 
         MediaS3UploadProcess::dispatch(
-            tmp_path: $path,
+            tmp_file_path: $path,
             destination: 'medias/1',
             filename: 'teste.png',
             media: $media
@@ -76,7 +76,7 @@ class MediaS3UploadProcessJobTest extends TestCase
         ]);
 
         $process = new MediaS3UploadProcess(
-            tmp_path: $path,
+            tmp_file_path: $path,
             destination: 'medias/1',
             filename: 'teste.png',
             media: $media

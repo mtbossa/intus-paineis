@@ -2,16 +2,18 @@
 
 namespace Tests\Feature;
 
+use App\Http\Livewire\Forms\MediaCreate;
 use Tests\TestCase;
 
 use App\Models\User;
 use App\Models\Media;
+use Livewire\Livewire;
 use App\Services\MediaService;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class MediaCrudTest extends TestCase
 {
@@ -39,12 +41,12 @@ class MediaCrudTest extends TestCase
         $file = UploadedFile::fake()->image('teste_papai_noel.jpg')->size(200);
         $filename = MediaService::generateFilename('Papai Noel de branco dia 24.', 'jpg');
 
-
-        $response = $this->post('/medias', [
-            'name'        => 'Papai Noel de branco dia 24.',
-            'description' => 'Imagem para ser colocada no dia 24 antes do Natal.',
-            'file'        => $file,
-        ]);  
+        Livewire::test(MediaCreate::class)
+            ->set('name', 'Papai Noel de branco dia 24.')
+            ->set('description', 'Imagem para ser colocada no dia 24 antes do Natal.')
+            ->set('media', $file)
+            ->call('storeMedia')
+            ->assertRedirect(route('medias.index'));
 
         $this->assertDatabaseCount('medias', 1);
 
@@ -52,48 +54,45 @@ class MediaCrudTest extends TestCase
         
         $this->assertNull($media->path);   
         
-        Storage::disk('local')->assertExists("tmp/{$this->user->id}/$filename");
-         
-        $response->assertRedirect(route('medias.index'));
+        Storage::disk('local')->assertExists("tmp/medias/uploads/{$this->user->id}/$filename");
     }
 
     /** @test */
     public function check_if_media_name_verification_is_working()
     { 
-        $response = $this->post('/medias', [
-            'name'        => '',
-            'description' => 'Uma mídia nova',
-        ]);
-
-        $response->assertSessionHasErrors('name');
-
-        $response = $this->post('/medias', [
-            // Name greater than 50 char. This string has 60 characters
-            'name'        => $this->faker->sentence(100),
-            'description' => 'Uma mídia nova',
-        ]);
-
-        $response->assertSessionHasErrors('name');
+        Livewire::test(MediaCreate::class)
+        ->set('name', '')
+        ->call('storeMedia')
+        ->assertHasErrors(['name' => 'required']);
     }
 
     /** @test */
     public function check_if_media_description_verification_is_working()
     {
-        $response = $this->post('/medias', [
-            'name'        => 'Teste',
-            'description' => ''
-        ]);
+        Livewire::test(MediaCreate::class)
+        ->set('description', '')
+        ->call('storeMedia')
+        ->assertHasErrors(['description' => 'required']);
+    }
 
-        $response->assertSessionHasErrors('description');
+    /** @test */
+    public function check_if_media_file_verification_is_working()
+    {
+        Livewire::test(MediaCreate::class)
+        ->set('media', null)
+        ->call('storeMedia')
+        ->assertHasErrors(['media' => 'required']);
+    }
 
-        $response = $this->post('/medias', [
-            'name'        => 'Teste',
-            // Description greater than 100 char. This string has 101 characters
-            'description' => $this->faker->text(200),
-            
-        ]);
+    /** @test */
+    public function check_if_media_file_type_verification_is_working()
+    {        
+        $file = UploadedFile::fake()->create('teste.pdf', 9900, 'application/pdf');
 
-        $response->assertSessionHasErrors('description');
+        Livewire::test(MediaCreate::class)
+            ->set('media', $file)
+            ->call('storeMedia')
+            ->assertHasErrors(['media' => 'mimes']);
     }
 
     /** @test */
@@ -119,13 +118,14 @@ class MediaCrudTest extends TestCase
         $this->actingAs($user);
 
         Storage::fake('s3');     
+        Storage::fake('local');     
         Bus::fake();
 
-        $response = $this->post('/medias', [
-            'name'        => 'Papai Noel de branco dia 24.',
-            'description' => 'Imagem para ser colocada no dia 24 antes do Natal.',
-            'file'        => UploadedFile::fake()->image('teste_papai_noel.jpg')->size(200),
-        ]);  
+        Livewire::test(MediaCreate::class)
+            ->set('name', 'Papai Noel de branco dia 24.')
+            ->set('description', 'Imagem para ser colocada no dia 24 antes do Natal.')
+            ->set('media', UploadedFile::fake()->image('teste_papai_noel.jpg')->size(200),)
+            ->call('storeMedia');
 
         $this->assertDatabaseCount('medias', 1);
 

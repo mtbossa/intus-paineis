@@ -1,4 +1,5 @@
-@props(['action', 'model', 'modelName'])
+@aware(['modelName', 'model'])
+@props(['action'])
 
 @php
 $action = strtolower($action);

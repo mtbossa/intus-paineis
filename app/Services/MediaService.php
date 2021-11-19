@@ -21,16 +21,9 @@ class MediaService
         $file_duration = $file_object->getPlaytimeSeconds() * 1000; // Saved as milliseconds
         $type          = (str_contains($file_info['mime_type'], 'video')) ? 'video' : 'image'; 
         $extension     = $file_info['fileformat'];   
-        $filename     = self::generateFilename($media_name, $extension);
+        $filename     = self::generateFilename($media_name, $extension);    
 
-        $tmp_folder  = 'tmp/medias/uploads/' . Auth::user()->id;
-        $destination = 'medias/' . Auth::user()->id;        
-
-        $tmp_path = $file->storeAs(
-            $tmp_folder,
-            $filename,
-            'local'
-        );
+        $tmp_file_path = $file->storeAs(Auth::user()->tmpMediaFolderPath(), $filename, 'local');
 
         $file->delete();
 
@@ -42,7 +35,7 @@ class MediaService
             'extension'   => $extension,
         ]);
      
-        MediaS3UploadProcess::dispatch($tmp_path, $media, $destination, $filename);
+        MediaS3UploadProcess::dispatch($tmp_file_path, $media, Auth::user()->s3FolderPath(), $filename);
 
         return $media;
     }

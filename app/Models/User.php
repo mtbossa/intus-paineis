@@ -58,4 +58,14 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function tmpMediaFolderPath()
+    {
+        return "tmp/medias/uploads/{$this->id}";
+    }
+
+    public function s3FolderPath()
+    {
+        return "medias/{$this->id}";
+    }
 }

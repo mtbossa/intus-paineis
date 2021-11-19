@@ -24,7 +24,7 @@ class MediaS3UploadProcess implements ShouldQueue
      * @return void
      */
     public function __construct(
-        public string $tmp_path,
+        public string $tmp_file_path,
         public Media $media,
         public string $destination,
         public string $filename,        
@@ -37,13 +37,13 @@ class MediaS3UploadProcess implements ShouldQueue
      */
     public function handle()
     {
-        $complete_tmp_path = Storage::disk('local')->path($this->tmp_path);
+        $complete_tmp_path = Storage::disk('local')->path($this->tmp_file_path);
 
         $path_s3 = Storage::disk('s3')->putFileAs($this->destination, new File($complete_tmp_path), $this->filename, 'public');
 
         $this->media->path = $path_s3;
         $this->media->save();
 
-        Storage::disk('local')->delete($this->tmp_path);
+        Storage::disk('local')->delete($this->tmp_file_path);
     }
 }

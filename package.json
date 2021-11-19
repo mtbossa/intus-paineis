@@ -24,6 +24,7 @@
         "tailwindcss": "^2.2.2"
     },
     "dependencies": {
-        "@fortawesome/fontawesome-free": "^5.15.4"
+        "@fortawesome/fontawesome-free": "^5.15.4",
+        "@themesberg/flowbite": "^1.1.1"
     }
 }
