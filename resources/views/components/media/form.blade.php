@@ -34,15 +34,6 @@
             <x-form.input id="description" name="description" placeholder="Descrição da mídia" type="text"
                 value="{{ old('description', optional($media ?? null)->description) }}"/>
         </x-form.field>
-
-        <x-form.field for="file">
-            <x-slot name="label">
-                <x-form.label for="file" required="true">
-                    Arquivo
-                </x-form.label>
-            </x-slot>
-            <x-form.input id="file" name="file" type="file" accept=".png, .jpg, .jpeg, .mp4"/>
-        </x-form.field>
     
     </x-form>  
 </div>

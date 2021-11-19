@@ -28,7 +28,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::view('/test', 'test');
 
     Route::resource('displays', DisplayController::class);
-    Route::resource('medias', MediaController::class);
+    Route::resource('medias', MediaController::class)->except('store');
     Route::resource('posts', PostController::class);
 });
 

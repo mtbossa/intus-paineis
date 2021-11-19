@@ -50,12 +50,12 @@
                             </x-badge>
                         @endisset
                     </x-table.cell>
-                    <x-table.button action="edit" model-id="{{ $media->id }}">                        
+                    <x-table.button action="edit" model-name="media" :model="$media">                        
                         <x-slot name="text">
                             Editar
                         </x-slot>
                     </x-table.button>                            
-                    <x-table.button action="delete" model-id="{{ $media->id }}">
+                    <x-table.button action="delete" model-name="media" :model="$media">
                         <x-slot name="text">
                             Excluir
                         </x-slot>

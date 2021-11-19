@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateMediaRequest;
+use \Illuminate\Contracts\View\View;
 use App\Http\Requests\UpdateMediaRequest;
 use App\Models\Media;
 use App\Services\MediaService;
@@ -32,17 +32,6 @@ class MediaController extends Controller
         return view('app.medias.create');
     }
 
-    public function store(CreateMediaRequest $request, MediaService $media_service): RedirectResponse
-    {
-        if(!$request->file->isValid() || !$request->validated()) {
-            return redirect()->back();
-        }
-
-        $media = $media_service->store($request->file, $request->name, $request->description);
-
-        return redirect()->route('medias.index');
-    }
-
     /**
      * Display the specified resource.
      *
@@ -60,9 +49,9 @@ class MediaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Media $media): View
     {
-        //
+        return view('app.medias.edit', ['media' => $media]);
     }
 
     public function update(UpdateMediaRequest $request, Media $media, MediaService $media_service): RedirectResponse

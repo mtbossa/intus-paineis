@@ -35,8 +35,8 @@
 
         <x-form.field for="media">
             <x-slot name="label">
-                <x-form.label for="media" required="true">
-                    Arquivo (mídia)
+                <x-form.label for="media" required="true" tooltip="Formatos aceitos">
+                    Arquivo (mídia)                    
                 </x-form.label>
             </x-slot>
             <x-form.filepond 

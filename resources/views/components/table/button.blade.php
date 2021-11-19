@@ -1,4 +1,4 @@
-@props(['action', 'modelId'])
+@props(['action', 'model', 'modelName'])
 
 @php
 $action = strtolower($action);
@@ -19,20 +19,20 @@ $class = "$colors text-center px-2";
     @if ($action === 'delete')
         <button onClick="
             event.preventDefault();
-            document.getElementById('delete-display-form-{{ $modelId }}').submit();
+            document.getElementById('delete-{{ $modelName }}-form-{{ $model->id }}').submit();
         " 
         type="button"
         class="{{ $class }}">
             {{ $text }}
         </button>
 
-        <form action="{{ route('displays.destroy', $modelId) }}" id="delete-display-form-{{ $modelId }}"
+        <form action="{{ route("{$modelName}s.destroy", $model->id) }}" id="delete-{{ $modelName }}-form-{{ $model->id }}"
             method="POST" style="display:none;">
             @csrf
             @method('DELETE');
         </form>
     @else
-        <a href="{{ route('displays.edit', $modelId) }}">
+        <a href="{{ route("{$modelName}s.edit", $model->id) }}">
             <div class="{{ $class }}">
                 {{ $text }}
             </div>
