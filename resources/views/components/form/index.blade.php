@@ -1,6 +1,6 @@
 @props(['spoof' => null])
 
-<form {{ $attributes->merge(['class' => "p-4 px-4 md:p-8 mb-6"]) }}>
+<form {{ $attributes->merge(['class' => "p-4 px-4 md:p-8"]) }}>
     @csrf
     @isset($spoof)
         @method($spoof)   

@@ -7,7 +7,7 @@
 
     <x-containers.main>
         @if(session('sucess'))
-            <x-notification model="media" class="mt-5">        
+            <x-notification model-name="media" class="mt-5">        
                 {{ session('sucess') }}            
             </x-notification>
         @endif

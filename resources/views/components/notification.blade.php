@@ -1,14 +1,14 @@
-@props(['model' => ''])
+@props(['modelName' => ''])
 
-@php    
+@php        
     switch(session('sucess')):
-        case __("messages.{$model}_created"):
+        case __("messages.{$modelName}_created"):
             $colors = 'bg-green-800';
             break;
-        case __("messages.{$model}_deleted"):
+        case __("messages.{$modelName}_deleted"):
             $colors = 'bg-red-800';
             break;
-        case __("messages.{$model}_updated"):
+        case __("messages.{$modelName}_updated"):
             $colors = 'bg-blue-800';
             break;
         default:

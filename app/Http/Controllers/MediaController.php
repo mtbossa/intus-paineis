@@ -62,13 +62,13 @@ class MediaController extends Controller
         
         $updated_media = $media_service->update($request->name, $request->description, $media);
 
-        return redirect($updated_media->path());
+        return redirect($updated_media->path() . '/edit')->with('sucess', __('messages.media_updated'));
     }
 
     public function destroy(Media $media, MediaService $media_service): RedirectResponse
     {
         $media_service->delete($media);
 
-        return redirect()->route('medias.index');
+        return redirect()->route('medias.index')->with('sucess', __('messages.media_deleted'));
     }
 }

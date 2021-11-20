@@ -43,6 +43,6 @@ class MediaCreate extends Component
 
         $media = $media_service->store($this->media, $this->name, $this->description);
 
-        return redirect()->route('medias.index');
+        return redirect()->route('medias.index')->with('sucess', __('messages.media_create'));
     }
 }

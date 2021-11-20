@@ -5,7 +5,7 @@
         </h2>
 
         @if(session('sucess'))
-            <x-notification model="display">            
+            <x-notification model-name="display">            
                 {{ session('sucess') }}            
             </x-notification>
         @endif
@@ -52,7 +52,6 @@
 
         <div class="py-3 px-3">
             {{ $displays->links() }}
-        </div>    
-
+        </div> 
     </x-containers.main>
 </x-app-layout>

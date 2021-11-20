@@ -5,7 +5,7 @@
         </h2>
 
         @if(session('sucess'))
-            <x-notification model="media">            
+            <x-notification model-name="media">            
                 {{ session('sucess') }}            
             </x-notification>
         @endif
