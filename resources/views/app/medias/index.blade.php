@@ -41,11 +41,11 @@
                     <x-table.cell>{{ ucfirst($media->type) }}</x-table.cell>
                     <x-table.cell>
                         @isset($media->path)
-                            <x-badge class="w-32 bg-green-500">
+                            <x-badge color="green">
                                 Disponível
                             </x-badge>
                         @else
-                            <x-badge class="w-32 bg-blue-500">
+                            <x-badge color="blue">
                                 Em progresso
                             </x-badge>
                         @endisset

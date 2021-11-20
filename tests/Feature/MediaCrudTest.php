@@ -108,7 +108,7 @@ class MediaCrudTest extends TestCase
         $this->assertEquals('Antigo media', $media->fresh()->name);
         $this->assertEquals('Caxias do Sul', $media->fresh()->description);
 
-        $response->assertRedirect($media->path());
+        $response->assertRedirect($media->path() . '/edit');
     }
 
     /** @test */
