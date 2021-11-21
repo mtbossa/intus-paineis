@@ -36,16 +36,12 @@
                     <x-table.cell>{{ $display->id }}</x-table.cell>
                     <x-table.cell>{{ $display->name }}</x-table.cell>
                     <x-table.cell>{{ $display->location }}</x-table.cell>                            
-                    <x-table.button action="edit" model-name="display">                        
-                        <x-slot name="text">
-                            Editar
-                        </x-slot>
+                    <x-table.button href="{{ route('displays.edit', $display->id) }} " color="blue">                                          
+                        Editar                   
                     </x-table.button>                            
-                    <x-table.button action="delete">
-                        <x-slot name="text">
-                            Excluir
-                        </x-slot>
-                    </x-table.button>                            
+                    <x-table.button action="delete" color="red">                       
+                        Excluir                       
+                    </x-table.button>                           
                 </x-table.row>
             @endforeach  
         </x-table>

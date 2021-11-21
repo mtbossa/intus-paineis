@@ -1,11 +1,11 @@
 @aware(['modelName', 'model'])
-@props(['action'])
+@props(['action' => null, 'color'])
 
 @php
-$action = strtolower($action);
+$action = $action ? strtolower($action) : null;
 
-switch ($action) {
-    case 'delete':
+switch ($color) {
+    case 'red':
         $colors = 'text-red-500 hover:text-red-700';
         break;
     default:
@@ -13,7 +13,7 @@ switch ($action) {
         break;
 }
 
-$class = "$colors text-center px-2";
+$class = "$colors px-4";
 @endphp
 
 <td>
@@ -21,22 +21,18 @@ $class = "$colors text-center px-2";
         <button onClick="
             event.preventDefault();
             document.getElementById('delete-{{ $modelName }}-form-{{ $model->id }}').submit();
-        " 
-        type="button"
-        class="{{ $class }}">
-            {{ $text }}
+        " type="button" {{ $attributes->merge(['class' => $class]) }}>
+            {{ $slot }}
         </button>
 
-        <form action="{{ route("{$modelName}s.destroy", $model->id) }}" id="delete-{{ $modelName }}-form-{{ $model->id }}"
-            method="POST" style="display:none;">
+        <form action="{{ route("{$modelName}s.destroy", $model->id) }}"
+            id="delete-{{ $modelName }}-form-{{ $model->id }}" method="POST" style="display:none;">
             @csrf
             @method('DELETE');
         </form>
     @else
-        <a href="{{ route("{$modelName}s.edit", $model->id) }}">
-            <div class="{{ $class }}">
-                {{ $text }}
-            </div>
+        <a {{ $attributes->merge(['class' => $class]) }}>
+            {{ $slot }}
         </a>
     @endif
 </td>
